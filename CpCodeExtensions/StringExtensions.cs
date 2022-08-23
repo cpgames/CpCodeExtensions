@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace cpGames.core
@@ -20,6 +21,18 @@ namespace cpGames.core
                 arr[i] = s.Substring(i * size, Math.Min(size, s.Length - i * size));
             }
             return arr;
+        }
+
+        public static string Join(this string[] s)
+        {
+            var str = string.Empty;
+
+            if (s == null || s.Length == 0)
+            {
+                return str;
+            }
+
+            return s.Aggregate(str, (current, subStr) => current + subStr);
         }
 
         public static string Capitalize(this string s)
@@ -53,6 +66,20 @@ namespace cpGames.core
             index++;
             letterPart += index.ToString();
             return letterPart;
+        }
+
+        public static string ToLowerFirstLetter(this string s)
+        {
+            return char.ToLower(s[0]) + s.Substring(1);
+        }
+
+        public static string Truncate(this string s, int length)
+        {
+            if (length < 1 || s.Length >= length)
+            {
+                return s;
+            }
+            return s.Substring(0, length) + "...";
         }
         #endregion
     }

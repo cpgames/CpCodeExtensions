@@ -42,6 +42,23 @@ namespace cpGames.core
                 action(item);
             }
         }
+
+        public static bool ArrayContentEquals<T>(this T[] source, T[] other)
+        {
+            if (other == null ||
+                other.Length != source.Length)
+            {
+                return false;
+            }
+
+            return source.All(other.Contains);
+        }
+
+        public static T GetRandomItem<T>(this List<T> source)
+        {
+            var index = new Random(Guid.NewGuid().GetHashCode()).Next(0, source.Count);
+            return source[index];
+        }
         #endregion
     }
 }
