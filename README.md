@@ -7,7 +7,5 @@ Helper methods for C#:
 * Singleton pattern
 * UidGenerator
 
-https://www.nuget.org/packages/ChillPillGames.CpCodeExtensions/
-
 ## License:
 CpCodeExtensions is licensed under the MIT license.
