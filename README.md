@@ -3,6 +3,7 @@ Helper methods for C#:
 * List extensions
 * String extensions
 * Binary extensions
+* Reflection extensions
 * Singleton pattern
 * UidGenerator
 
