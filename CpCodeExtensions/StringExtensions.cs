@@ -1,79 +1,82 @@
-﻿using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text;
 
-namespace cpGames.core;
-
-public static class StringExtensions
+namespace cpGames.core
 {
-    #region Methods
-    public static string[] Split(this string s, int size)
+    public static class StringExtensions
     {
-        if (s.Length <= size)
+        #region Methods
+        public static string[] Split(this string s, int size)
         {
-            return new[] { s };
-        }
-
-        var n = s.Length / size + 1;
-        var arr = new string[n];
-        for (var i = 0; i < n; i++)
-        {
-            arr[i] = s.Substring(i * size, Math.Min(size, s.Length - i * size));
-        }
-        return arr;
-    }
-
-    public static string Join(this string[] s)
-    {
-        var str = string.Empty;
-        return s.Length == 0 ?
-            str :
-            s.Aggregate(str, (current, subStr) => current + subStr);
-    }
-
-    public static string Capitalize(this string s)
-    {
-        if (string.IsNullOrEmpty(s))
-        {
-            return s;
-        }
-        return char.ToUpper(s[0]) + s[1..];
-    }
-
-    public static string IncrementIndex(this string s)
-    {
-        var builder = new StringBuilder();
-        var letterPart = "";
-        for (var i = s.Length - 1; i >= 0; i--)
-        {
-            if (!char.IsDigit(s[i]))
+            if (s.Length <= size)
             {
-                letterPart = s[..(i + 1)];
-                break;
+                return new[] { s };
             }
-            builder.Insert(0, s[i]);
+
+            var n = s.Length / size + 1;
+            var arr = new string[n];
+            for (var i = 0; i < n; i++)
+            {
+                arr[i] = s.Substring(i * size, Math.Min(size, s.Length - i * size));
+            }
+            return arr;
         }
 
-        var index = 0;
-        if (builder.Length > 0)
+        public static string Join(this string[] s)
         {
-            index = int.Parse(builder.ToString());
+            var str = string.Empty;
+            return s.Length == 0 ?
+                str :
+                s.Aggregate(str, (current, subStr) => current + subStr);
         }
-        index++;
-        letterPart += index.ToString();
-        return letterPart;
-    }
 
-    public static string ToLowerFirstLetter(this string s)
-    {
-        return char.ToLower(s[0]) + s[1..];
-    }
-
-    public static string Truncate(this string s, int length)
-    {
-        if (length < 1 || s.Length >= length)
+        public static string Capitalize(this string s)
         {
-            return s;
+            if (string.IsNullOrEmpty(s))
+            {
+                return s;
+            }
+            return char.ToUpper(s[0]) + s[1..];
         }
-        return string.Concat(s[..length], "...");
+
+        public static string IncrementIndex(this string s)
+        {
+            var builder = new StringBuilder();
+            var letterPart = "";
+            for (var i = s.Length - 1; i >= 0; i--)
+            {
+                if (!char.IsDigit(s[i]))
+                {
+                    letterPart = s[..(i + 1)];
+                    break;
+                }
+                builder.Insert(0, s[i]);
+            }
+
+            var index = 0;
+            if (builder.Length > 0)
+            {
+                index = int.Parse(builder.ToString());
+            }
+            index++;
+            letterPart += index.ToString();
+            return letterPart;
+        }
+
+        public static string ToLowerFirstLetter(this string s)
+        {
+            return char.ToLower(s[0]) + s[1..];
+        }
+
+        public static string Truncate(this string s, int length)
+        {
+            if (length < 1 || s.Length >= length)
+            {
+                return s;
+            }
+            return string.Concat(s[..length], "...");
+        }
+        #endregion
     }
-    #endregion
 }

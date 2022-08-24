@@ -1,46 +1,47 @@
-﻿namespace cpGames.core;
-
-public static class Number
+﻿namespace cpGames.core
 {
-    #region Fields
-    public const int DIGITS_IN_LONG = 19;
-    public const int DIGITS_IN_INT = 10;
-    #endregion
-
-    #region Methods
-    public static long GetFactor(int digits)
+    public static class Number
     {
-        long n = 1;
-        for (var i = 0; i < digits; i++)
+        #region Fields
+        public const int DIGITS_IN_LONG = 19;
+        public const int DIGITS_IN_INT = 10;
+        #endregion
+
+        #region Methods
+        public static long GetFactor(int digits)
         {
-            n *= 10;
+            long n = 1;
+            for (var i = 0; i < digits; i++)
+            {
+                n *= 10;
+            }
+            return n;
         }
-        return n;
-    }
 
-    public static long GetFactorInverse(int digits)
-    {
-        return GetFactor(DIGITS_IN_LONG - digits);
-    }
+        public static long GetFactorInverse(int digits)
+        {
+            return GetFactor(DIGITS_IN_LONG - digits);
+        }
 
-    public static long RemoveDigitsLeft(long value, int digits)
-    {
-        var m = GetFactorInverse(digits);
-        var l = value / m;
-        l *= m;
-        return value - l;
-    }
+        public static long RemoveDigitsLeft(long value, int digits)
+        {
+            var m = GetFactorInverse(digits);
+            var l = value / m;
+            l *= m;
+            return value - l;
+        }
 
-    public static long RemoveDigitsRight(long value, int digits)
-    {
-        var m = GetFactorInverse(digits);
-        return value / m;
-    }
+        public static long RemoveDigitsRight(long value, int digits)
+        {
+            var m = GetFactorInverse(digits);
+            return value / m;
+        }
 
-    public static int LongToIntLSB(long l)
-    {
-        l = RemoveDigitsLeft(l, DIGITS_IN_INT);
-        return (int)l;
+        public static int LongToIntLSB(long l)
+        {
+            l = RemoveDigitsLeft(l, DIGITS_IN_INT);
+            return (int)l;
+        }
+        #endregion
     }
-    #endregion
 }

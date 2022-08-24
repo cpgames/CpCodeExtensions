@@ -1,36 +1,38 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
-namespace cpGames.core;
-
-public class Singleton<T>
+namespace cpGames.core
 {
-    #region Fields
-    private static T _instance;
-    #endregion
-
-    #region Properties
-    public static T Instance
+    public class Singleton<T>
     {
-        get
+        #region Fields
+        private static T _instance = default!;
+        #endregion
+
+        #region Properties
+        public static T Instance
         {
-            if (_instance != null)
+            get
             {
+                if (_instance != null)
+                {
+                    return _instance;
+                }
+                var ctor =
+                    typeof(T).GetConstructor(
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+                        null, Type.EmptyTypes, null);
+                if (ctor != null)
+                {
+                    _instance = (T)ctor.Invoke(null);
+                }
+                else
+                {
+                    throw new Exception($"{typeof(T).Name} has no parameterless constructor");
+                }
                 return _instance;
             }
-            var ctor =
-                typeof(T).GetConstructor(
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                    null, Type.EmptyTypes, null);
-            if (ctor != null)
-            {
-                _instance = (T)ctor.Invoke(null);
-            }
-            else
-            {
-                throw new Exception($"{typeof(T).Name} has no parameterless constructor");
-            }
-            return _instance;
         }
+        #endregion
     }
-    #endregion
 }
