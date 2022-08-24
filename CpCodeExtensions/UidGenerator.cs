@@ -1,90 +1,94 @@
-﻿namespace cpGames.core;
+﻿using System;
+using System.Collections.Generic;
 
-public class UidGenerator
+namespace cpGames.core
 {
-    #region Fields
-    private static readonly Random RND = new();
-    private readonly Random _rnd;
-    protected readonly object _syncRoot = new();
-    private readonly HashSet<long> _uids = new();
-    #endregion
-
-    #region Constructors
-    public UidGenerator()
+    public class UidGenerator
     {
-        _rnd = RND;
-    }
+        #region Fields
+        private static readonly Random RND = new Random();
+        private readonly Random _rnd;
+        protected readonly object _syncRoot = new object();
+        private readonly HashSet<long> _uids = new HashSet<long>();
+        #endregion
 
-    public UidGenerator(int seed)
-    {
-        _rnd = new Random(seed);
-    }
-    #endregion
-
-    #region Methods
-    public long GenerateUid()
-    {
-        lock (_syncRoot)
+        #region Constructors
+        public UidGenerator()
         {
-            long uid;
-            do
-            {
-                uid = (long)(_rnd.NextDouble() * (long.MaxValue - 1)) + 1;
-            } while (!_uids.Add(uid));
-
-            return uid;
+            _rnd = RND;
         }
-    }
 
-    public long GenerateUid(int offset)
-    {
-        lock (_syncRoot)
+        public UidGenerator(int seed)
         {
-            long uid;
-            do
-            {
-                var max = Number.RemoveDigitsLeft(long.MaxValue, offset);
-                uid = (long)(_rnd.NextDouble() * (max - 1)) + 1;
-            } while (!_uids.Add(uid));
-
-            return uid;
+            _rnd = new Random(seed);
         }
-    }
+        #endregion
 
-    public void RemoveUid(long uid)
-    {
-        lock (_syncRoot)
+        #region Methods
+        public long GenerateUid()
         {
-            _uids.Remove(uid);
-        }
-    }
-
-    public void AddUid(long uid)
-    {
-        lock (_syncRoot)
-        {
-            if (_uids.Contains(uid))
+            lock (_syncRoot)
             {
-                throw new Exception("Uid already exists");
+                long uid;
+                do
+                {
+                    uid = (long)(_rnd.NextDouble() * (long.MaxValue - 1)) + 1;
+                } while (!_uids.Add(uid));
+
+                return uid;
             }
-            _uids.Add(uid);
         }
-    }
 
-    public void Clear()
-    {
-        lock (_syncRoot)
+        public long GenerateUid(int offset)
         {
-            _uids.Clear();
-        }
-    }
+            lock (_syncRoot)
+            {
+                long uid;
+                do
+                {
+                    var max = Number.RemoveDigitsLeft(long.MaxValue, offset);
+                    uid = (long)(_rnd.NextDouble() * (max - 1)) + 1;
+                } while (!_uids.Add(uid));
 
-    public bool HasUid(long uid)
-    {
-        lock (_syncRoot)
-        {
-            return _uids.Contains(uid);
+                return uid;
+            }
         }
+
+        public void RemoveUid(long uid)
+        {
+            lock (_syncRoot)
+            {
+                _uids.Remove(uid);
+            }
+        }
+
+        public void AddUid(long uid)
+        {
+            lock (_syncRoot)
+            {
+                if (_uids.Contains(uid))
+                {
+                    throw new Exception("Uid already exists");
+                }
+                _uids.Add(uid);
+            }
+        }
+
+        public void Clear()
+        {
+            lock (_syncRoot)
+            {
+                _uids.Clear();
+            }
+        }
+
+        public bool HasUid(long uid)
+        {
+            lock (_syncRoot)
+            {
+                return _uids.Contains(uid);
+            }
+        }
+        #endregion
     }
-    #endregion
 }
