@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace cpGames.core
 {
-    public class Singleton<T> where T : class
+    public class Singleton<T>
     {
         #region Fields
         private static T? _instance;

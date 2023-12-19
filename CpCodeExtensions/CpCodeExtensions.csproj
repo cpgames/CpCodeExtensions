@@ -16,6 +16,7 @@
         <PackageIcon>icon.png</PackageIcon>
         <PackageId>$(Authors).$(AssemblyName)</PackageId>
         <Version>1.0.2</Version>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
